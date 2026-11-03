@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIE401 Workshop 1, Artificial Intelligence for Educators</title>
+<meta name="description" content="Interactive resources for AIE401 Artificial Intelligence for Educators, Workshop 1: breakout task cards, games, quizzes and recap tools.">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js"></script>
+<style>
+.agenda { display: grid; gap: 8px; }
+.agenda div { display: grid; grid-template-columns: 70px 1fr auto; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; }
+.agenda b { color: var(--accent); }
+.agenda a { font-weight: 700; font-size: .85rem; }
+.dl { display: flex; gap: 12px; align-items: center; text-decoration: none; color: var(--text); }
+.dl .ext { width: 46px; height: 46px; border-radius: 10px; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: .72rem; flex: none; }
+.ext.w { background: #2b579a; } .ext.p { background: #c43e1c; }
+</style>
+</head>
+<body>
+<main id="main" class="wrap" tabindex="-1">
+  <section class="hero">
+    <span class="kicker">AIE401 Artificial Intelligence for Educators</span>
+    <h1>Workshop 1, foundations and applied practice</h1>
+    <p>Wednesday 18 November 2026, 13:30 to 17:00, online in Microsoft Teams. Everything you need for the afternoon and for the weeks that follow, in one place.</p>
+    <div class="row" style="margin-top:18px">
+      <a class="btn teal" href="apps/breakout-rooms.html">Open the breakout task cards</a>
+      <a class="btn" style="background:transparent;border-color:rgba(255,255,255,.6)" href="apps/recap.html">Recap after the session</a>
+    </div>
+  </section>
+
+  <h2>During the session</h2>
+  <div class="grid g3">
+    <a class="card tile" href="apps/starting-point.html"><span class="ico navy"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 13h4v8H3zm7-6h4v14h-4zm7-4h4v18h-4z"/></svg></span><h3>Starting Point</h3><p class="small muted">The initial diagnostic. Score sixteen statements and get your own tailored route through the module.</p><span class="go">Start</span></a>
+    <a class="card tile" href="apps/bingo.html"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm10 0h8v8h-8z"/></svg></span><h3>AI Bingo</h3><p class="small muted">The icebreaker. Tick what is true for you and race to a line.</p><span class="go">Play</span></a>
+    <a class="card tile" href="apps/ai-or-not.html"><span class="ico cyan"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-2h2zm2.1-7.7-.9.9A3.2 3.2 0 0 0 13 13h-2v-.5a4 4 0 0 1 1.2-2.8l1.2-1.3A1.9 1.9 0 0 0 12 5.9 2 2 0 0 0 10 8H8a4 4 0 1 1 7.1 2.3z"/></svg></span><h3>AI or Not?</h3><p class="small muted">Twelve everyday tools. Machine learning, generative AI, adaptive or automation?</p><span class="go">Play</span></a>
+    <a class="card tile" href="apps/breakout-rooms.html"><span class="ico navy"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16 11a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm-8 0a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm0 2c-2.3 0-7 1.2-7 3.5V19h14v-2.5C15 14.2 10.3 13 8 13zm8 0h-1a4.8 4.8 0 0 1 2 3.5V19h6v-2.5c0-2.3-4.7-3.5-7-3.5z"/></svg></span><h3>Breakout Room Companion</h3><p class="small muted">All three task cards with a role spinner, step timers, copyable prompts and room notes.</p><span class="go">Open</span></a>
+    <a class="card tile" href="apps/prompt-lab.html"><span class="ico dteal"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 2v2h1v5.6L4.4 19A2 2 0 0 0 6.1 22h11.8a2 2 0 0 0 1.7-3L14 9.6V4h1V2zm3 9.2 2.6 4.8H9.4z"/></svg></span><h3>Prompt Lab</h3><p class="small muted">Build a strong prompt that scores itself, then take the Upgrade Challenge.</p><span class="go">Open</span></a>
+    <a class="card tile" href="apps/traffic-lights.html"><span class="ico" style="background:#b26b00"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 2h6a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm3 2.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 5.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 5.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg></span><h3>Traffic Light Sort</h3><p class="small muted">Twelve uses of AI in assessment. Go, with care, or keep it human?</p><span class="go">Sort</span></a>
+    <a class="card tile" href="apps/timer.html"><span class="ico cyan"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 1h6v2H9zm10 6.4 1.4-1.4-1.4-1.4-1.5 1.5A9 9 0 1 0 21 13a8.9 8.9 0 0 0-2-5.6zM13 14h-2V8h2z"/></svg></span><h3>Session Timer</h3><p class="small muted">Big, shareable countdowns for every segment, with a chime.</p><span class="go">Open</span></a>
+  </div>
+
+  <h2>After the session</h2>
+  <div class="grid g3">
+    <a class="card tile" href="apps/recap.html"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 4h12a2 2 0 0 1 2 2v12H6a2 2 0 0 1-2-2zm16 4v12a2 2 0 0 1-2 2H8v-2h10V8z"/></svg></span><h3>Workshop 1 Recap</h3><p class="small muted">Flashcards, a knowledge check, glossary, 3, 2, 1 reflection and your directed study tracker.</p><span class="go">Recap</span></a>
+    <a class="card tile" href="apps/hallucination-hunter.html"><span class="ico navy"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M10 2a8 8 0 0 1 6.3 12.9l5.4 5.4-1.4 1.4-5.4-5.4A8 8 0 1 1 10 2zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/></svg></span><h3>Hallucination Hunter</h3><p class="small muted">Six AI answers, each hiding one confident error. Can you find them all?</p><span class="go">Hunt</span></a>
+    <a class="card tile" href="apps/myth-or-reality.html"><span class="ico dteal"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 2 7l10 5 10-5zm-8 8.2V16l8 4 8-4v-5.8l-8 4z"/></svg></span><h3>Myth or Reality?</h3><p class="small muted">Twelve quick fire claims people make about AI.</p><span class="go">Play</span></a>
+  </div>
+
+  <h2>This afternoon</h2>
+  <div class="agenda">
+    <div><b>13:30</b><span>Keynote, the module, the assessment and the Summit</span><a href="apps/bingo.html">Bingo</a></div>
+    <div><b>14:00</b><span>What AI actually is, and your Starting Point diagnostic</span><a href="apps/starting-point.html">Diagnostic</a></div>
+    <div><b>14:40</b><span>Breakout one, Prompt Relay</span><a href="apps/breakout-rooms.html">Task card</a></div>
+    <div><b>15:15</b><span>Break</span><span></span></div>
+    <div><b>15:25</b><span>Breakout two, Mark the Machine</span><a href="apps/breakout-rooms.html">Task card</a></div>
+    <div><b>16:00</b><span>Breakout three, One Resource, Five Learners</span><a href="apps/breakout-rooms.html">Task card</a></div>
+    <div><b>16:30</b><span>AI literacy and integrity by design</span><span></span></div>
+    <div><b>16:45</b><span>Your practice problem, directed study and exit ticket</span><a href="apps/recap.html">Recap</a></div>
+  </div>
+
+  <h2>Documents for participants</h2>
+  <div class="grid g2">
+    <a class="card dl" href="downloads/03%20AIE401%20Assessment%20Brief.docx"><span class="ext w">DOCX</span><span><strong>Assessment Brief</strong><br><span class="small muted">The poster and Summit presentation</span></span></a>
+    <a class="card dl" href="downloads/04%20AIE401%20Baseline%20AI%20Capability%20Self%20Assessment.docx"><span class="ext w">DOCX</span><span><strong>Baseline AI Capability Self Assessment</strong><br><span class="small muted">Complete it today</span></span></a>
+    <a class="card dl" href="downloads/05%20AIE401%20Reflective%20Journal.docx"><span class="ext w">DOCX</span><span><strong>Reflective Journal</strong><br><span class="small muted">Set it up today and keep it throughout</span></span></a>
+    <a class="card dl" href="downloads/06%20AIE401%20Breakout%20Task%20Cards.docx"><span class="ext w">DOCX</span><span><strong>Breakout Task Cards</strong><br><span class="small muted">Printable version of the three cards</span></span></a>
+    <a class="card dl" href="downloads/07%20AIE401%20Prompt%20Craft%20Card.docx"><span class="ext w">DOCX</span><span><strong>Prompt Craft Card</strong><br><span class="small muted">Keep it beside you</span></span></a>
+    <a class="card dl" href="downloads/08%20AIE401%20Directed%20Study%20Pack%2C%20before%20Workshop%202.docx"><span class="ext w">DOCX</span><span><strong>Directed Study Pack</strong><br><span class="small muted">Before Workshop 2</span></span></a>
+  </div>
+
+  <h2>For tutors</h2>
+  <div class="grid g2">
+    <a class="card dl" href="downloads/00%20AIE401%20Workshop%201%20Plan.docx"><span class="ext w">DOCX</span><span><strong>Workshop 1 Plan</strong><br><span class="small muted">Run sheet, allocations and room visit questions</span></span></a>
+    <a class="card dl" href="downloads/01%20AIE401%20Workshop%201%20Keynote.pptx"><span class="ext p">PPTX</span><span><strong>Keynote deck</strong><br><span class="small muted">30 minutes, with speaker notes</span></span></a>
+    <a class="card dl" href="downloads/02%20AIE401%20Workshop%201%20Main%20Deck.pptx"><span class="ext p">PPTX</span><span><strong>Main deck</strong><br><span class="small muted">Foundations, three breakouts, AI literacy and close</span></span></a>
+    <a class="card dl" href="downloads/09%20AIE401%20Session%20Handover%20Note.docx"><span class="ext w">DOCX</span><span><strong>Session Handover Note</strong><br><span class="small muted">For the Workshop 2 host</span></span></a>
+  </div>
+</main>
+<script>AIE.header("AIE401 Workshop 1", "Artificial Intelligence for Educators"); AIE.footer();</script>
+</body>
+</html>

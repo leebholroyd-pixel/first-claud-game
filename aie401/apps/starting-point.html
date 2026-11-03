@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Starting Point Diagnostic, AIE401 Workshop 1</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/site.js"></script>
+<style>
+.scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 8px; }
+.scale button { font: inherit; font-size: .82rem; font-weight: 700; padding: 10px 4px; border-radius: 10px; border: 2px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; }
+.scale button[aria-pressed="true"] { background: var(--navy); color: #fff; border-color: var(--navy); }
+.stmt { padding: 16px 0; border-bottom: 1px solid var(--border); }
+.dom { display: grid; grid-template-columns: 1fr 70px; gap: 10px; align-items: center; margin: 10px 0; }
+.dom .bar { height: 16px; }
+.dom.low strong { color: var(--no); }
+.sticky { position: sticky; top: 76px; }
+@media (max-width: 860px) { .sticky { position: static; } }
+</style>
+</head>
+<body>
+<main id="main" class="wrap" tabindex="-1">
+  <section class="hero">
+    <span class="kicker">Initial diagnostic, about 15 minutes</span>
+    <h1>Starting Point</h1>
+    <p>Sixteen statements across four areas. Be honest rather than generous. Your results set your starting point in AI literacy, confidence and application, and suggest where your own learning journey should begin.</p>
+  </section>
+  <div class="grid" style="grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr); gap: 22px; margin-top: 22px; align-items: start" id="layout">
+    <div class="card" id="qs"></div>
+    <div class="sticky">
+      <div class="card">
+        <h2 style="margin-top:0">Your profile</h2>
+        <p class="small muted" id="answered" aria-live="polite"></p>
+        <div id="doms"></div>
+        <div class="score" id="total" style="font-size:2rem">0 / 80</div>
+      </div>
+      <div class="card soft" style="margin-top:16px" id="route"><strong>Your tailored route</strong><p class="small" style="margin:6px 0 0">Answer every statement to see where to start.</p></div>
+      <div class="row" style="margin-top:14px"><button class="btn" id="dl">Download my results</button><button class="btn ghost" id="reset">Start again</button></div>
+      <p class="small muted" style="margin-top:10px">Also record your scores on the Word version of the self assessment and upload it to Canvas, so your tutors can tailor support.</p>
+    </div>
+  </div>
+</main>
+<script>
+AIE.header("Starting Point Diagnostic");
+if (innerWidth < 860) document.getElementById("layout").style.gridTemplateColumns = "1fr";
+const SCALE = ["Not yet", "A little", "Some idea", "Fairly confident", "Confident"];
+const D = [
+  { n: "Understanding AI", s: ["I can explain the difference between machine learning, generative AI, adaptive systems and automation", "I can explain in plain terms how a generative AI tool produces its answers", "I can describe what current AI tools do well and where they are unreliable", "I know which AI tools my institution has approved for staff to use"],
+    go: [["AI or Not?", "ai-or-not.html"], ["Myth or Reality?", "myth-or-reality.html"]], read: "Read the opening chapters of Bowen and Watson (2024), Teaching with AI." },
+  { n: "Using AI in teaching and assessment", s: ["I can write a prompt that produces a usable teaching resource for my learners", "I refine prompts over several rounds rather than accepting the first answer", "I can use AI to support assessment design, marking criteria or feedback", "I can check AI output for accuracy, level and quality before I use it"],
+    go: [["Prompt Lab", "prompt-lab.html"], ["Traffic Light Sort", "traffic-lights.html"]], read: "Make the resource task in your directed study your priority, using the Prompt Craft Card." },
+  { n: "Inclusion and personalisation", s: ["I can use AI to adapt a resource for a learner with additional needs", "I can use AI to simplify, translate or restructure material without losing its meaning", "I check AI adapted resources for accessibility before sharing them", "I can judge when personalisation helps a learner and when it does not"],
+    go: [["One Resource, Five Learners", "breakout-rooms.html"]], read: "Make the inclusion task in your directed study your priority and test it with a real learner profile." },
+  { n: "Ethics, policy and AI literacy", s: ["I know what my institution's AI policy or staff guidance says", "I know what learner data I must never put into an AI tool", "I could explain to my learners when and how they may use AI in their work", "I can explain what AI literacy means for staff and for learners"],
+    go: [["Hallucination Hunter", "hallucination-hunter.html"]], read: "Find your institution's AI policy and start the UNESCO (2023) guidance, ready for Workshop 2." }
+];
+let A = AIE.get("sp-answers", {});
+const qs = document.getElementById("qs");
+let html = "", n = 0;
+D.forEach((d, di) => { html += `<h2 style="margin-top:${di ? 28 : 0}px"><span class="pill">Area ${di + 1}</span><br>${d.n}</h2>`;
+  d.s.forEach(s => { const id = n++; html += `<div class="stmt" role="group" aria-labelledby="sl-${id}"><strong id="sl-${id}">${id + 1}. ${s}</strong><div class="scale">${SCALE.map((l, k) => `<button type="button" data-q="${id}" data-v="${k + 1}" aria-pressed="${A[id] === k + 1}"><span aria-hidden="true">${k + 1}</span><br>${l}</button>`).join("")}</div></div>`; }); });
+qs.innerHTML = html;
+qs.querySelectorAll("[data-q]").forEach(b => b.onclick = () => { const q = +b.dataset.q; A[q] = +b.dataset.v; AIE.set("sp-answers", A);
+  qs.querySelectorAll(`[data-q="${q}"]`).forEach(x => x.setAttribute("aria-pressed", +x.dataset.v === A[q])); paint(true); });
+function scores() { return D.map((d, di) => [0, 1, 2, 3].reduce((t, k) => t + (A[di * 4 + k] || 0), 0)); }
+function paint(live) {
+  const sc = scores(), done = Object.keys(A).length, tot = sc.reduce((a, b) => a + b, 0);
+  document.getElementById("answered").textContent = `${done} of 16 answered`;
+  const min = Math.min(...sc);
+  document.getElementById("doms").innerHTML = D.map((d, i) => `<div class="dom ${done === 16 && sc[i] === min ? "low" : ""}"><div><strong class="small">${d.n}</strong><div class="bar"><span style="width:${sc[i] / 20 * 100}%"></span></div></div><b>${sc[i]} / 20</b></div>`).join("");
+  document.getElementById("total").textContent = tot + " / 80";
+  const r = document.getElementById("route");
+  if (done < 16) { r.innerHTML = `<strong>Your tailored route</strong><p class="small" style="margin:6px 0 0">Answer every statement to see where to start.</p>`; return; }
+  const order = sc.map((v, i) => [v, i]).sort((a, b) => a[0] - b[0]).map(x => x[1]);
+  const band = tot <= 32 ? "You are starting near the beginning, which is exactly where this module starts." : tot <= 56 ? "You have used AI and have a feel for it. Your gains are in critique and judgement." : "You are already confident. Your challenge is depth, evidence and leadership, so help colleagues in the Community of Practice.";
+  r.innerHTML = `<strong>Your tailored route</strong><p class="small" style="margin:6px 0 10px">${band}</p>` + order.slice(0, 2).map((i, k) => `<div style="margin-bottom:12px"><span class="badge">${k ? "Then" : "Start here"}</span><br><strong>${D[i].n}</strong><br>${D[i].go.map(g => `<a href="${g[1]}">${g[0]}</a>`).join(", ")}<br><span class="small">${D[i].read}</span></div>`).join("");
+  if (live && done === 16 && !paint.cele) { paint.cele = true; AIE.confetti(); AIE.toast("Your starting point is ready"); }
+}
+document.getElementById("dl").onclick = () => { const sc = scores(); AIE.download("AIE401 Starting Point diagnostic.txt", `AIE401 Starting Point diagnostic, ${new Date().toLocaleDateString("en-GB")}\n\n` + D.map((d, i) => `${d.n}: ${sc[i]} / 20\n` + d.s.map((s, k) => `  ${s}: ${A[i * 4 + k] ? SCALE[A[i * 4 + k] - 1] : "not answered"}`).join("\n")).join("\n\n") + `\n\nTotal: ${sc.reduce((a, b) => a + b, 0)} / 80\n`); };
+document.getElementById("reset").onclick = () => { if (!confirm("Clear your answers?")) return; A = {}; AIE.set("sp-answers", A); qs.querySelectorAll("[data-q]").forEach(x => x.setAttribute("aria-pressed", "false")); paint.cele = false; paint(); };
+paint();
+AIE.footer();
+</script>
+</body>
+</html>

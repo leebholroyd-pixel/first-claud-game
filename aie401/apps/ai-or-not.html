@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI or Not? AIE401 Workshop 1</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/site.js"></script>
+</head>
+<body>
+<main id="main" class="wrap" tabindex="-1">
+  <section class="hero">
+    <span class="kicker">Game, about 8 minutes</span>
+    <h1>AI or Not?</h1>
+    <p>Twelve everyday tools. For each one, decide what is really going on underneath: machine learning, generative AI, an adaptive system, or plain automation. Build a streak.</p>
+  </section>
+  <div class="grid g4" style="margin:22px 0">
+    <div class="card soft"><strong>Machine learning</strong><br><span class="small">Learns patterns from data to predict or classify</span></div>
+    <div class="card soft"><strong>Generative AI</strong><br><span class="small">Produces new text, images, audio or code</span></div>
+    <div class="card soft"><strong>Adaptive system</strong><br><span class="small">Changes what a learner sees next based on performance</span></div>
+    <div class="card soft"><strong>Automation</strong><br><span class="small">Follows fixed rules, no learning involved</span></div>
+  </div>
+  <div class="card" id="game" aria-live="polite"></div>
+</main>
+<script>
+AIE.header("AI or Not?");
+const CATS = ["Machine learning", "Generative AI", "Adaptive system", "Automation"];
+const ITEMS = [
+  ["Your email moving a suspicious message into junk", 0, "Spam filters learn from millions of examples of junk and genuine mail to classify new messages."],
+  ["Copilot drafting a scheme of work from your prompt", 1, "It generates new text by predicting likely words. It is not retrieving a stored scheme of work."],
+  ["A maths platform giving harder questions after three correct answers", 2, "It adapts the next item to the learner's performance. Some platforms use fixed rules, others use machine learning underneath, which is why this one splits the room."],
+  ["Canvas releasing the next module when a quiz is passed", 3, "A fixed rule: if the score is above a threshold, unlock. Nothing is learned."],
+  ["A streaming service recommending what to watch next", 0, "Recommendation engines learn from your viewing and from people with similar habits."],
+  ["A spreadsheet macro emailing every learner their attendance", 3, "The same steps, every time, from a rule someone wrote. Useful, but not intelligent."],
+  ["A tool turning your lesson notes into an audio summary in a natural voice", 1, "Both the summary and the synthetic voice are generated."],
+  ["A similarity checker flagging text that matches other essays", 3, "Similarity checking compares text against a database of sources. It does not generate anything. Tools that claim to detect AI writing are a different thing, and they are unreliable."],
+  ["Your phone suggesting the next word as you type a message", 0, "Predictive text learns from language data, and often from your own typing too."],
+  ["An image tool creating a poster illustration from a description", 1, "Text to image models generate a new picture from your prompt."],
+  ["A language app that brings back words you keep getting wrong", 2, "Spaced repetition adapts the review schedule to what each learner forgets."],
+  ["An auto reply that says you are out of the office", 3, "A rule fires when an email arrives. Nothing is learned or generated."]
+];
+let order, i, score, streak, best, answered;
+const g = document.getElementById("game");
+function start() { order = AIE.shuffle(ITEMS); i = 0; score = 0; streak = 0; best = 0; ask(); }
+function ask() {
+  answered = false;
+  const it = order[i];
+  g.innerHTML = `<div class="row" style="justify-content:space-between"><span class="pill">Item ${i + 1} of ${order.length}</span><span class="badge">Score ${score}</span><span class="badge">Streak ${streak}</span></div>
+  <h2 style="margin-top:16px">${it[0]}</h2>
+  <div class="grid g2" style="gap:8px">${CATS.map((c, k) => `<button class="choice" data-k="${k}">${c}</button>`).join("")}</div>
+  <div id="fb"></div>`;
+  g.querySelectorAll(".choice").forEach(b => b.onclick = () => answer(+b.dataset.k));
+  g.querySelector(".choice").focus();
+}
+function answer(k) {
+  if (answered) return; answered = true;
+  const it = order[i], ok = k === it[1];
+  if (ok) { score++; streak++; best = Math.max(best, streak); } else streak = 0;
+  g.querySelectorAll(".choice").forEach(b => { b.disabled = true; const kk = +b.dataset.k; if (kk === it[1]) b.classList.add("right"); else if (kk === k) b.classList.add("wrong"); });
+  document.getElementById("fb").innerHTML = `<div class="fb ${ok ? "ok" : "no"}"><strong>${ok ? (streak >= 3 ? "Right, and that is " + streak + " in a row." : "Right.") : "Not quite. It is " + CATS[it[1]].toLowerCase() + "."}</strong>${it[2]}</div>
+  <div class="row" style="margin-top:14px"><button class="btn" id="next">${i + 1 < order.length ? "Next item" : "See your score"}</button></div>`;
+  document.getElementById("next").onclick = () => { i++; i < order.length ? ask() : end(); };
+  document.getElementById("next").focus();
+}
+function end() {
+  const prev = AIE.get("aion-best", 0); AIE.set("aion-best", Math.max(prev, score));
+  if (score >= 9) AIE.confetti();
+  const msg = score >= 11 ? "Outstanding. You could run this session." : score >= 8 ? "Strong. You can see what is going on under the bonnet." : score >= 5 ? "A good start. The lines really do blur." : "Plenty to talk about. That is the point of the game.";
+  g.innerHTML = `<span class="pill">Finished</span><div class="score" style="margin-top:10px">${score} / ${order.length}</div><p><strong>${msg}</strong></p><p class="muted">Best streak ${best}. Your best score in this browser: ${Math.max(prev, score)}.</p>
+  <div class="card soft"><strong>The takeaway</strong><p style="margin:6px 0 0">The categories blur, and suppliers often call everything AI. Before you decide how far to trust a tool, ask what it is actually doing: following rules, predicting from patterns, adapting to a learner, or generating something new.</p></div>
+  <div class="row" style="margin-top:16px"><button class="btn" id="again">Play again</button><a class="btn ghost" href="../index.html">Back to all resources</a></div>`;
+  document.getElementById("again").onclick = start;
+}
+start();
+AIE.footer();
+</script>
+</body>
+</html>

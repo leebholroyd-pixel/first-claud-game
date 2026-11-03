@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session Timer, AIE401 Workshop 1</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/site.js"></script>
+<style>
+.big { font-size: clamp(5rem, 22vw, 14rem); line-height: 1; text-align: center; }
+.stage { text-align: center; padding: clamp(20px, 5vw, 50px); }
+#fs-wrap:fullscreen { background: var(--navy); display: grid; place-items: center; }
+#fs-wrap:fullscreen .timer { color: #fff; } #fs-wrap:fullscreen .muted { color: var(--lteal); }
+</style>
+</head>
+<body>
+<main id="main" class="wrap" tabindex="-1">
+  <section class="hero">
+    <span class="kicker">For the organiser and tutors</span>
+    <h1>Session Timer</h1>
+    <p>Share this screen during breakouts and the break. Pick a segment, press start, and a chime sounds when time is up.</p>
+  </section>
+  <div class="row" style="margin:20px 0" id="presets"></div>
+  <div class="card" id="fs-wrap">
+    <div class="stage">
+      <p class="muted" id="label" style="font-weight:700;font-size:1.2rem">Choose a segment</p>
+      <div class="timer big" id="t">0:00</div>
+      <div class="bar" style="max-width:700px;margin:18px auto" aria-hidden="true"><span id="b"></span></div>
+      <div class="row" style="justify-content:center"><button class="btn" id="go">Start</button><button class="btn ghost" id="pa">Pause</button><button class="btn ghost" id="re">Reset</button><button class="btn ghost" id="fs">Full screen</button></div>
+      <div class="row" style="justify-content:center;margin-top:14px"><button class="btn small ghost" data-add="-60">Minus a minute</button><button class="btn small ghost" data-add="60">Add a minute</button></div>
+    </div>
+  </div>
+</main>
+<script>
+AIE.header("Session Timer");
+const P = [["Bingo icebreaker", 5], ["AI or Not? quiz", 8], ["Starting Point and journal", 15], ["Prompt Relay", 22], ["Break", 10], ["Mark the Machine", 22], ["One Resource, Five Learners", 19], ["Chat waterfall", 2], ["Practice problem", 5], ["Custom 1 minute", 1]];
+const T = AIE.timer(document.getElementById("t"), document.getElementById("b"), () => { document.getElementById("label").textContent = "Time is up"; });
+document.getElementById("presets").innerHTML = P.map((p, i) => `<button class="btn small ${i === 4 ? "teal" : "ghost"}" data-p="${i}">${p[0]}, ${p[1]} min</button>`).join("");
+document.querySelectorAll("[data-p]").forEach(b => b.onclick = () => { const p = P[+b.dataset.p]; T.ended = false; T.set(p[1] * 60); document.getElementById("label").textContent = p[0]; });
+document.getElementById("go").onclick = () => T.start();
+document.getElementById("pa").onclick = () => T.stop();
+document.getElementById("re").onclick = () => T.reset();
+document.querySelectorAll("[data-add]").forEach(b => b.onclick = () => { const a = +b.dataset.add; T.left = Math.max(0, T.left + a); T.total = Math.max(T.total + a, 1); T.ended = T.left <= 0; T.paint(); });
+document.getElementById("fs").onclick = () => { const w = document.getElementById("fs-wrap"); document.fullscreenElement ? document.exitFullscreen() : w.requestFullscreen && w.requestFullscreen(); };
+AIE.footer();
+</script>
+</body>
+</html>

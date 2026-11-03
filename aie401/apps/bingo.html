@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Bingo, AIE401 Workshop 1</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/site.js"></script>
+</head>
+<body>
+<main id="main" class="wrap" tabindex="-1" style="max-width:820px">
+  <section class="hero">
+    <span class="kicker">Icebreaker, 5 minutes</span>
+    <h1>AI Bingo</h1>
+    <p>Tap every square that is true for you. Get a line, shout bingo in the chat, and tell us the story behind one square.</p>
+  </section>
+  <div class="row" style="margin:20px 0;justify-content:space-between">
+    <span class="badge" id="count" aria-live="polite">0 of 16</span>
+    <div class="row"><button class="btn small ghost" id="shuffle">New card</button><button class="btn small" id="copy">Copy my card for the chat</button></div>
+  </div>
+  <div class="bingo" id="card" role="group" aria-label="Bingo card"></div>
+  <div id="won" class="card soft" style="margin-top:18px" hidden><strong>Bingo.</strong> Type BINGO in the Teams chat, then pick one square and tell us what happened.</div>
+</main>
+<script>
+AIE.header("AI Bingo");
+const ALL = [
+  "Used AI to write an email", "Asked AI to explain something to me", "Caught AI getting a fact wrong", "Used AI to plan a lesson",
+  "Had a learner hand in work that sounded like AI", "Used AI on my phone", "Generated an image with AI", "Asked AI to make something shorter",
+  "Never used an AI tool before today", "Know my institution's AI policy", "Said please to a chatbot", "Used AI to write quiz questions",
+  "Used AI to rewrite something more kindly", "Tried more than one AI tool", "Worried about AI and assessment", "Had AI invent a reference",
+  "Used AI for something outside work", "Shown a learner how to use AI well", "Used AI to translate something", "Used AI to summarise a long document",
+  "Been told by AI that it could not help", "Used AI in a meeting", "Changed my mind about AI this year", "Used voice to talk to an AI"
+];
+let squares = AIE.get("bingo-card", null), marked = AIE.get("bingo-marked", []), won = false;
+if (!squares) newCard();
+function newCard() { squares = AIE.shuffle(ALL).slice(0, 16); marked = []; won = false; AIE.set("bingo-card", squares); AIE.set("bingo-marked", marked); }
+const LINES = []; for (let r = 0; r < 4; r++) LINES.push([0, 1, 2, 3].map(c => r * 4 + c)); for (let c = 0; c < 4; c++) LINES.push([0, 1, 2, 3].map(r => r * 4 + c)); LINES.push([0, 5, 10, 15], [3, 6, 9, 12]);
+function paint() {
+  const el = document.getElementById("card");
+  el.innerHTML = squares.map((s, i) => `<button class="sq" aria-pressed="${marked.includes(i)}" data-i="${i}">${s}</button>`).join("");
+  el.querySelectorAll(".sq").forEach(b => b.onclick = () => { const i = +b.dataset.i; marked = marked.includes(i) ? marked.filter(x => x !== i) : [...marked, i]; AIE.set("bingo-marked", marked); b.setAttribute("aria-pressed", marked.includes(i)); check(); });
+  check(true);
+}
+function check(quiet) {
+  document.getElementById("count").textContent = marked.length + " of 16";
+  const line = LINES.some(l => l.every(x => marked.includes(x)));
+  document.getElementById("won").hidden = !line;
+  if (line && !won && !quiet) { AIE.confetti(); AIE.toast("Bingo"); }
+  won = line;
+}
+document.getElementById("shuffle").onclick = () => { newCard(); paint(); };
+document.getElementById("copy").onclick = () => AIE.copy((won ? "BINGO. " : "") + "My AI Bingo: " + marked.map(i => squares[i]).join("; "), "Copied, paste it in the chat");
+paint();
+AIE.footer();
+</script>
+</body>
+</html>
